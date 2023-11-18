@@ -28,5 +28,10 @@ contract TestOrderSettlement is BaseFixture {
             salt: keccak256(abi.encode(bytes32(0))),
             staticInput: abi.encode(orderDets)
         });
+
+        // impersonate safe to create order and verify its creation
+        vm.prank(GNOSIS_CHAIN_SAFE);
+        composableCow.create(params, true);
+        assertEq(composableCow.singleOrders(GNOSIS_CHAIN_SAFE, keccak256(abi.encode(params))), true);
     }
 }
