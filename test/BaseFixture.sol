@@ -10,6 +10,12 @@ import {ICowSettlement} from "../src/interfaces/ICowSettlement.sol";
 import {ComposableCoW} from "cow-order/ComposableCoW.sol";
 import {TestAccount, TestAccountLib} from "lib/cow/test/libraries/TestAccountLib.t.sol";
 
+import {SafeProtocolRegistry} from "safe-protocol/SafeProtocolRegistry.sol";
+import {SafeProtocolManager} from "safe-protocol/SafeProtocolManager.sol";
+import {PLUGIN_PERMISSION_EXECUTE_CALL, MODULE_TYPE_PLUGIN} from "safe-protocol/common/Constants.sol";
+
+import {IGnosisSafe} from "../src/interfaces/IGnosisSafe.sol";
+
 import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 
 import {OrderHandler} from "src/OrderHandler.sol";
@@ -21,6 +27,9 @@ contract BaseFixture is Test {
 
     ComposableCoW composableCow;
 
+    SafeProtocolRegistry registry;
+    SafeProtocolManager manager;
+
     // fake counter party
     TestAccount counterMaxi;
 
@@ -29,6 +38,8 @@ contract BaseFixture is Test {
 
     // gnosis safe address
     address constant GNOSIS_CHAIN_SAFE = 0xa4A4a4879dCD3289312884e9eC74Ed37f9a92a55;
+
+    IGnosisSafe constant SAFE = IGnosisSafe(GNOSIS_CHAIN_SAFE);
 
     // tokens
     IERC20 constant WXDAI = IERC20(0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d);
@@ -74,5 +85,14 @@ contract BaseFixture is Test {
         vm.prank(COW_ALLOW_LIST.manager());
         COW_ALLOW_LIST.addSolver(FAKE_SOLVER);
         assertTrue(COW_ALLOW_LIST.isSolver(FAKE_SOLVER));
+
+        // safe protocol settings
+        registry = new SafeProtocolRegistry(GNOSIS_CHAIN_SAFE);
+        manager = new SafeProtocolManager(GNOSIS_CHAIN_SAFE, address(registry));
+
+        vm.prank(GNOSIS_CHAIN_SAFE);
+        SAFE.enableModule(address(manager));
+
+        assertEq(SAFE.isModuleEnabled(address(manager)), true);
     }
 }

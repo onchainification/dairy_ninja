@@ -4,3 +4,6 @@
 [submodule "lib/cow"]
 	path = lib/cow
 	url = https://github.com/cowprotocol/composable-cow.git
+[submodule "lib/safe-protocol"]
+	path = lib/safe-protocol
+	url = https://github.com/safe-global/safe-core-protocol

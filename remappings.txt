@@ -7,3 +7,4 @@ balancer/=lib/cow/lib/balancer/src/
 canonical-weth/=lib/cow/lib/canonical-weth/src/
 cowprotocol/=lib/cow/lib/cowprotocol/src/contracts/
 murky/=lib/cow/lib/murky/src/
+safe-protocol/=lib/safe-protocol/contracts/
