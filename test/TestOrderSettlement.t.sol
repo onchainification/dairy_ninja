@@ -10,7 +10,7 @@ import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 import {GPv2Order} from "cowprotocol/libraries/GPv2Order.sol";
 import {IConditionalOrder} from "cow-order/interfaces/IConditionalOrder.sol";
 
-import {GPv2Trade} from "../src/interfaces/ICowSettlement.sol";
+import {GPv2Trade, GPv2Interaction} from "../src/interfaces/ICowSettlement.sol";
 
 import {OrderHandler} from "src/OrderHandler.sol";
 
@@ -58,6 +58,10 @@ contract TestOrderSettlement is BaseFixture {
 
         // order includes our safe's plus counterparty for local test
         GPv2Trade.Data[] memory trades = new GPv2Trade.Data[](2);
+
+        // empty interactions for before, during and after the settlement in our case
+        GPv2Interaction.Data[][3] memory interactions =
+            [new GPv2Interaction.Data[](0), new GPv2Interaction.Data[](0), new GPv2Interaction.Data[](0)];
 
         (GPv2Order.Data memory order, bytes memory signature) =
             composableCow.getTradeableOrderWithSignature(GNOSIS_CHAIN_SAFE, params, bytes(""), proof);
