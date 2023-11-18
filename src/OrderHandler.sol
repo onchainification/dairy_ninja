@@ -58,6 +58,8 @@ contract OrderHandler is BaseConditionalOrder {
         // decode `staticInput` received in the handler following struct pattern
         Data memory dets = abi.decode(staticInput, (Data));
 
+        // TODO: check quote VS oracles!!!!
+
         // construct order
         order = GPv2Order.Data({
             sellToken: dets.sellToken,
