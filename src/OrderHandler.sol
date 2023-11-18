@@ -8,6 +8,7 @@ import {GPv2Order} from "cowprotocol/libraries/GPv2Order.sol";
 
 import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 
+import {ISelfKiss} from "./interfaces/ISelfKiss.sol";
 import {IChronicleOracle} from "./interfaces/IChronicleOracle.sol";
 
 /// @title OrderHandler
@@ -18,19 +19,19 @@ contract OrderHandler is BaseConditionalOrder {
                                    CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    // ref: https://chroniclelabs.org/dashboard/oracle/ETH/USD?blockchain=GNO&txn=0x553acf4265afea825633c10a3252e7ab532c655745a11c47d4cdff8d3714b725&contract=0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef
-    IChronicleOracle constant ORACLE_CHRONICLE = IChronicleOracle(0x5E16CA75000fb2B9d7B1184Fa24fF5D938a345Ef);
+    // https://gnosisscan.io/address/0x0Dcc19657007713483A5cA76e6A7bbe5f56EA37d#code
+    ISelfKiss constant SELF_KISS_CHRONICLE = ISelfKiss(0x0Dcc19657007713483A5cA76e6A7bbe5f56EA37d);
+
+    // https://docs.chroniclelabs.org/docs/hackathons/eth-global-istanbul-hackathon#smart-contract-addresses-on-gnosis-mainnet
+    IChronicleOracle constant ORACLE_CHRONICLE = IChronicleOracle(0xc8A1F9461115EF3C1E84Da6515A88Ea49CA97660);
 
     ComposableCoW public immutable composableCow;
 
     constructor(ComposableCoW _composableCow) {
+        // self WL the SC itself on deployment
+        SELF_KISS_CHRONICLE.selfKiss(address(ORACLE_CHRONICLE), address(this));
+        // set the composable sc addy
         composableCow = _composableCow;
-    }
-
-    function kissMe() external {
-        // self-kiss on deployment
-        // ref: https://docs.chroniclelabs.org/docs/hackathons/eth-global-istanbul-hackathon#chronicle-protocol-contracts
-        ORACLE_CHRONICLE.kiss(address(this));
     }
 
     function getOraclePrice() public view returns (uint256) {
