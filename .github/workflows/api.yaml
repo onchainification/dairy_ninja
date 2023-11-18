@@ -26,3 +26,5 @@ jobs:
         with:
           version: prod
           project_id: ${{ secrets.GCP_PROJECT_ID }}
+          env_vars: |-
+            FUSION_API_KEY=${{ secrets.FUSION_API_KEY }}
