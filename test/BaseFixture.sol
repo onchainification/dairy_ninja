@@ -19,6 +19,7 @@ import {IGnosisSafe} from "../src/interfaces/IGnosisSafe.sol";
 import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 
 import {OrderHandler} from "src/OrderHandler.sol";
+import {DairyNinjaModule} from "src/DairyNinjaModule.sol";
 
 contract BaseFixture is Test {
     using TestAccountLib for TestAccount;
@@ -29,6 +30,7 @@ contract BaseFixture is Test {
 
     SafeProtocolRegistry registry;
     SafeProtocolManager manager;
+    DairyNinjaModule module;
 
     // fake counter party
     TestAccount counterMaxi;
@@ -63,16 +65,6 @@ contract BaseFixture is Test {
         // block height: https://gnosisscan.io/block/31014855
         vm.createSelectFork("gnosis", 31014855);
 
-        // add labels to help debugging in trace
-        vm.label(address(FAKE_SOLVER), "FAKE_SOLVER");
-        vm.label(address(GNOSIS_CHAIN_SAFE), "GNOSIS_CHAIN_SAFE");
-        vm.label(address(COW_SETTLEMENT), "COW_SETTLEMENT");
-        vm.label(address(ORACLE_CHRONICLE), "ORACLE_CHRONICLE");
-        vm.label(address(COW_ALLOW_LIST), "COW_ALLOW_LIST");
-        vm.label(address(COW_RELAYER), "COW_RELAYER");
-        vm.label(address(WXDAI), "WXDAI");
-        vm.label(address(WETH), "WETH");
-
         counterMaxi = TestAccountLib.createTestAccount("counterMaxi");
         deal(address(WETH), counterMaxi.addr, 4000 ether);
 
@@ -89,10 +81,30 @@ contract BaseFixture is Test {
         // safe protocol settings
         registry = new SafeProtocolRegistry(GNOSIS_CHAIN_SAFE);
         manager = new SafeProtocolManager(GNOSIS_CHAIN_SAFE, address(registry));
+        module = new DairyNinjaModule(address(manager));
 
         vm.prank(GNOSIS_CHAIN_SAFE);
         SAFE.enableModule(address(manager));
 
         assertEq(SAFE.isModuleEnabled(address(manager)), true);
+
+        vm.prank(GNOSIS_CHAIN_SAFE);
+        registry.addModule(address(module), MODULE_TYPE_PLUGIN);
+
+        // vm.prank(GNOSIS_CHAIN_SAFE);
+        // manager.enablePlugin(address(module), PLUGIN_PERMISSION_EXECUTE_CALL);
+
+        // add labels to help debugging in trace
+        vm.label(address(FAKE_SOLVER), "FAKE_SOLVER");
+        vm.label(address(GNOSIS_CHAIN_SAFE), "GNOSIS_CHAIN_SAFE");
+        vm.label(address(COW_SETTLEMENT), "COW_SETTLEMENT");
+        vm.label(address(ORACLE_CHRONICLE), "ORACLE_CHRONICLE");
+        vm.label(address(COW_ALLOW_LIST), "COW_ALLOW_LIST");
+        vm.label(address(COW_RELAYER), "COW_RELAYER");
+        vm.label(address(WXDAI), "WXDAI");
+        vm.label(address(WETH), "WETH");
+        vm.label(address(registry), "SAFE_REGISTRY");
+        vm.label(address(manager), "SAFE_MANAGER");
+        vm.label(address(module), "DAIRY_NINJA_MODULE");
     }
 }
