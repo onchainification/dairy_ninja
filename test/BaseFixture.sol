@@ -5,15 +5,15 @@ import {Test} from "forge-std/Test.sol";
 
 import {IChronicleOracle} from "../src/interfaces/IChronicleOracle.sol";
 
-// import {ComposableCoW} from "cow-order/ComposableCoW.sol";
+import {ComposableCoW} from "cow-order/ComposableCoW.sol";
 
 import {OrderHandler} from "src/OrderHandler.sol";
 
 contract BaseFixture is Test {
     OrderHandler orderHandler;
 
-    // ComposableCoW composableCow;
-    
+    ComposableCoW composableCow;
+
     // NOTE: found addy in https://gnosisscan.io/address/0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef#readContract#F2
     address constant RELY_AUTH_ORACLE = 0xc50dFeDb7E93eF7A3DacCAd7987D0960c4e2CD4b;
 
@@ -24,9 +24,9 @@ contract BaseFixture is Test {
         vm.createSelectFork("gnosis", 31008982);
 
         // ref: https://github.com/cowprotocol/composable-cow/tree/ab3addad9bc05acdbf5fb040eb5c336209b58e31#deployed-contracts
-        // composableCow = ComposableCoW(0xfdaFc9d1902f4e0b84f65F49f244b32b31013b74);
+        composableCow = ComposableCoW(0xfdaFc9d1902f4e0b84f65F49f244b32b31013b74);
         // deploy handler
-        orderHandler = new OrderHandler();
+        orderHandler = new OrderHandler(composableCow);
 
         // auth order handler. IRL: go to sponsor and ask them WL 🙏
         vm.prank(RELY_AUTH_ORACLE);
