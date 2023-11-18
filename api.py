@@ -22,18 +22,15 @@ async def get_quotes(
     async def get_fusion_quote(sell_token_address, sell_mantissa, buy_token_address):
         headers = {"Authorization": f"Bearer {os.getenv('FUSION_API_KEY')}"}
         chain = 100
-        fusion_url = f"https://api.1inch.dev/fusion/quoter/v1.0/{chain}/quote/receive"
+        fusion_url = f"https://api.1inch.dev/swap/v5.2/{chain}/quote"
         params = {
-            "fromTokenAddress": sell_token_address,
-            "toTokenAddress": buy_token_address,
+            "src": sell_token_address,
+            "dst": buy_token_address,
             "amount": sell_mantissa,
-            "walletAddress": NULL_ADDRESS,
-            "enableEstimate": "false",
-            "isLedgerLive": "false",
         }
         r = requests.get(fusion_url, headers=headers, params=params)
         r.raise_for_status()
-        return r.json()["presets"]["fast"]["auctionEndAmount"]
+        return r.json()["toAmount"]
 
     async def get_cow_quote(sell_token_address, sell_mantissa, buy_token_address):
         cow_url = "https://api.cow.fi/xdai/api/v1/quote"
@@ -55,7 +52,8 @@ async def get_quotes(
         }
         r = requests.post(cow_url, json=data)
         r.raise_for_status()
-        return r.json()["quote"]["buyAmount"]
+        quote = r.json()["quote"]
+        return str(int(quote["buyAmount"]) + int(quote["feeAmount"]))
 
     fusion = await get_fusion_quote(
         sell_token_address, sell_mantissa, buy_token_address
