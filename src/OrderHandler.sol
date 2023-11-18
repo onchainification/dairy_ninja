@@ -55,13 +55,16 @@ contract OrderHandler is BaseConditionalOrder {
         bytes calldata staticInput,
         bytes calldata offchainInput
     ) public view override returns (GPv2Order.Data memory order) {
-        // NOTE: all is DUMMY data for now!!!!
+        // decode `staticInput` received in the handler following struct pattern
+        Data memory dets = abi.decode(staticInput, (Data));
+
+        // construct order
         order = GPv2Order.Data({
-            sellToken: IERC20(address(0)),
-            buyToken: IERC20(address(0)),
-            receiver: address(0),
+            sellToken: dets.sellToken,
+            buyToken: dets.buyToken,
+            receiver: dets.receiver,
             sellAmount: uint256(0),
-            buyAmount: uint256(0),
+            buyAmount: dets.buyAmount,
             validTo: uint32(block.timestamp),
             appData: keccak256("test.kiss.me"),
             feeAmount: 0,

@@ -7,6 +7,7 @@ import {BaseFixture} from "./BaseFixture.sol";
 
 import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 
+import {GPv2Order} from "cowprotocol/libraries/GPv2Order.sol";
 import {IConditionalOrder} from "cow-order/interfaces/IConditionalOrder.sol";
 
 import {GPv2Trade} from "../src/interfaces/ICowSettlement.sol";
@@ -19,6 +20,10 @@ contract TestOrderSettlement is BaseFixture {
     }
 
     function testSafeOrderSettlement() public {
+        // NOTE: indicates single-order
+        bytes32[] memory proof = new bytes32[](0);
+
+        // read balance of SAFE
         uint256 wxdaiBalance = WXDAI.balanceOf(GNOSIS_CHAIN_SAFE);
         console.log(wxdaiBalance);
         // ensure safe has positive balance of `WXDAI`
@@ -52,6 +57,15 @@ contract TestOrderSettlement is BaseFixture {
 
         // order includes our safe's plus counterparty for local test
         GPv2Trade.Data[] memory trades = new GPv2Trade.Data[](2);
+
+        (GPv2Order.Data memory order, bytes memory signature) =
+            composableCow.getTradeableOrderWithSignature(GNOSIS_CHAIN_SAFE, params, bytes(""), proof);
+
+        // ensure dets outputted are as expected from conditiona order dets creation
+        assertEq(address(orderDets.sellToken), address(order.sellToken));
+        assertEq(address(orderDets.buyToken), address(order.buyToken));
+        assertEq(orderDets.receiver, order.receiver);
+        assertEq(orderDets.buyAmount, order.buyAmount);
 
         // settle order onchain
         vm.prank(FAKE_SOLVER);
