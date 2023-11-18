@@ -37,8 +37,14 @@ contract TestOrderSettlement is BaseFixture {
         assertGt(wxdaiBalance, 0);
 
         // single order creation
-        OrderHandler.Data memory orderDets =
-            OrderHandler.Data({sellToken: WXDAI, buyToken: WETH, receiver: GNOSIS_CHAIN_SAFE, buyAmount: 1});
+        OrderHandler.Data memory orderDets = OrderHandler.Data({
+            sellToken: WXDAI,
+            buyToken: WETH,
+            receiver: GNOSIS_CHAIN_SAFE,
+            sellAmount: wxdaiBalance,
+            buyAmount: 2000 ether, // assume 2k price eth/usd (fake)
+            validTo: uint32(block.timestamp + 2 days) // assumes is valid from now till 2d in the future
+        });
         IConditionalOrder.ConditionalOrderParams memory params = IConditionalOrder.ConditionalOrderParams({
             handler: orderHandler,
             salt: keccak256(abi.encode(bytes32(0))),
@@ -62,6 +68,12 @@ contract TestOrderSettlement is BaseFixture {
         (GPv2Order.Data memory order, bytes memory signature) =
             composableCow.getTradeableOrderWithSignature(GNOSIS_CHAIN_SAFE, params, bytes(""), proof);
 
+        // ensure dets outputted are as expected from conditiona order dets creation
+        assertEq(address(orderDets.sellToken), address(order.sellToken));
+        assertEq(address(orderDets.buyToken), address(order.buyToken));
+        assertEq(orderDets.receiver, order.receiver);
+        assertEq(orderDets.buyAmount, order.buyAmount);
+
         // counter trade from counterMaxi
         GPv2Order.Data memory counterOrder = GPv2Order.Data({
             sellToken: order.buyToken,
@@ -77,6 +89,9 @@ contract TestOrderSettlement is BaseFixture {
             buyTokenBalance: GPv2Order.BALANCE_ERC20,
             sellTokenBalance: GPv2Order.BALANCE_ERC20
         });
+
+        vm.prank(counterMaxi.addr);
+        WETH.approve(COW_RELAYER, counterOrder.sellAmount);
 
         address[] memory tokens = new address[](2);
         tokens[0] = address(order.sellToken);
@@ -106,9 +121,7 @@ contract TestOrderSettlement is BaseFixture {
 
         // hash signing
         bytes32 hashToSign = GPv2Order.hash(counterOrder, COW_SETTLEMENT.domainSeparator());
-        //(uint8 v, bytes32 r, bytes32 s) = vm.sign(account.pk, hashToSign);
-        bytes memory counterPartySig = new bytes(65);
-        //counterPartySig = abi.encodePacked(r, s, v);
+        bytes memory counterPartySig = counterMaxi.signPacked(hashToSign);
 
         // 2. counter-party trade
         trades[1] = GPv2Trade.Data({
@@ -125,14 +138,8 @@ contract TestOrderSettlement is BaseFixture {
             signature: counterPartySig
         });
 
-        // ensure dets outputted are as expected from conditiona order dets creation
-        assertEq(address(orderDets.sellToken), address(order.sellToken));
-        assertEq(address(orderDets.buyToken), address(order.buyToken));
-        assertEq(orderDets.receiver, order.receiver);
-        assertEq(orderDets.buyAmount, order.buyAmount);
-
         // settle order onchain
         vm.prank(FAKE_SOLVER);
-        // COW_SETTLEMENT.settle(tokens, execPrices, trades, interactions);
+        COW_SETTLEMENT.settle(tokens, execPrices, trades, interactions);
     }
 }

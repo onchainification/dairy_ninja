@@ -15,12 +15,14 @@ import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 import {OrderHandler} from "src/OrderHandler.sol";
 
 contract BaseFixture is Test {
+    using TestAccountLib for TestAccount;
+
     OrderHandler orderHandler;
 
     ComposableCoW composableCow;
 
     // fake counter party
-    address constant COUNTER_PARTY = 0xcB1c77846c34Ea44F40B447FaE0D2FdF2b4b5919;
+    TestAccount counterMaxi;
 
     // fake solver agent
     address constant FAKE_SOLVER = 0x5b47121521fBcAE0dFFfbC312Bb73fE88F4E8BE6;
@@ -50,7 +52,18 @@ contract BaseFixture is Test {
         // block height: https://gnosisscan.io/block/31014855
         vm.createSelectFork("gnosis", 31014855);
 
-        // deal(address(WETH), COUNTER_PARTY, 10 ether);
+        // add labels to help debugging in trace
+        vm.label(address(FAKE_SOLVER), "FAKE_SOLVER");
+        vm.label(address(GNOSIS_CHAIN_SAFE), "GNOSIS_CHAIN_SAFE");
+        vm.label(address(COW_SETTLEMENT), "COW_SETTLEMENT");
+        vm.label(address(ORACLE_CHRONICLE), "ORACLE_CHRONICLE");
+        vm.label(address(COW_ALLOW_LIST), "COW_ALLOW_LIST");
+        vm.label(address(COW_RELAYER), "COW_RELAYER");
+        vm.label(address(WXDAI), "WXDAI");
+        vm.label(address(WETH), "WETH");
+
+        counterMaxi = TestAccountLib.createTestAccount("counterMaxi");
+        deal(address(WETH), counterMaxi.addr, 4000 ether);
 
         // ref: https://github.com/cowprotocol/composable-cow/tree/ab3addad9bc05acdbf5fb040eb5c336209b58e31#deployed-contracts
         composableCow = ComposableCoW(0xfdaFc9d1902f4e0b84f65F49f244b32b31013b74);

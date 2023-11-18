@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
+import {console} from "forge-std/Test.sol";
+
 import {ComposableCoW} from "cow-order/ComposableCoW.sol";
 import {BaseConditionalOrder} from "cow-order/BaseConditionalOrder.sol";
 
@@ -24,7 +26,9 @@ contract OrderHandler is BaseConditionalOrder {
         IERC20 sellToken;
         IERC20 buyToken;
         address receiver;
+        uint256 sellAmount;
         uint256 buyAmount;
+        uint32 validTo;
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -84,7 +88,7 @@ contract OrderHandler is BaseConditionalOrder {
         // decode `staticInput` received in the handler following struct pattern
         Data memory dets = abi.decode(staticInput, (Data));
 
-        // NOTE: we check that quote does not deviate more than 10%. DO NOT RUG ME!
+        /// @dev Check that quote does not deviate more than 10%. DO NOT RUG ME!
         uint256 oracleFeedsResult = (_getOraclePrice() * 9_000) / MAX_BPS;
         if (dets.buyAmount < oracleFeedsResult) revert("CowSwap endpoint is trying to rug us!!");
 
@@ -93,9 +97,9 @@ contract OrderHandler is BaseConditionalOrder {
             sellToken: dets.sellToken,
             buyToken: dets.buyToken,
             receiver: dets.receiver,
-            sellAmount: uint256(0),
+            sellAmount: dets.sellAmount,
             buyAmount: dets.buyAmount,
-            validTo: uint32(block.timestamp),
+            validTo: dets.validTo,
             appData: keccak256("test.kiss.me"),
             feeAmount: 0,
             kind: GPv2Order.KIND_SELL,
@@ -103,5 +107,8 @@ contract OrderHandler is BaseConditionalOrder {
             sellTokenBalance: GPv2Order.BALANCE_ERC20,
             buyTokenBalance: GPv2Order.BALANCE_ERC20
         });
+
+        /// @dev Revert if the order is expired!
+        if (!(block.timestamp <= order.validTo)) revert("Order expired");
     }
 }
