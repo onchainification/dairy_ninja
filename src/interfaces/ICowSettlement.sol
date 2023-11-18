@@ -8,6 +8,8 @@ interface ICowSettlement {
         GPv2Trade.Data[] memory trades,
         GPv2Interaction.Data[][3] memory interactions
     ) external;
+
+    function domainSeparator() external view returns (bytes32);
 }
 
 interface GPv2Trade {

@@ -8,6 +8,7 @@ import {IGPv2AllowListAuthentication} from "../src/interfaces/IGPv2AllowListAuth
 import {ICowSettlement} from "../src/interfaces/ICowSettlement.sol";
 
 import {ComposableCoW} from "cow-order/ComposableCoW.sol";
+import {TestAccount, TestAccountLib} from "lib/cow/test/libraries/TestAccountLib.t.sol";
 
 import {IERC20} from "@openzeppelin/token/ERC20/IERC20.sol";
 
@@ -17,6 +18,9 @@ contract BaseFixture is Test {
     OrderHandler orderHandler;
 
     ComposableCoW composableCow;
+
+    // fake counter party
+    address constant COUNTER_PARTY = 0xcB1c77846c34Ea44F40B447FaE0D2FdF2b4b5919;
 
     // fake solver agent
     address constant FAKE_SOLVER = 0x5b47121521fBcAE0dFFfbC312Bb73fE88F4E8BE6;
@@ -43,8 +47,10 @@ contract BaseFixture is Test {
     IChronicleOracle constant ORACLE_CHRONICLE = IChronicleOracle(0xc8A1F9461115EF3C1E84Da6515A88Ea49CA97660);
 
     function setUp() public virtual {
-        // block height: https://gnosisscan.io/block/31008982
-        vm.createSelectFork("gnosis", 31008982);
+        // block height: https://gnosisscan.io/block/31014855
+        vm.createSelectFork("gnosis", 31014855);
+
+        // deal(address(WETH), COUNTER_PARTY, 10 ether);
 
         // ref: https://github.com/cowprotocol/composable-cow/tree/ab3addad9bc05acdbf5fb040eb5c336209b58e31#deployed-contracts
         composableCow = ComposableCoW(0xfdaFc9d1902f4e0b84f65F49f244b32b31013b74);
