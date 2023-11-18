@@ -13,7 +13,8 @@ contract BaseFixture is Test {
     OrderHandler orderHandler;
 
     // ComposableCoW composableCow;
-
+    
+    // NOTE: found addy in https://gnosisscan.io/address/0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef#readContract#F2
     address constant RELY_AUTH_ORACLE = 0xc50dFeDb7E93eF7A3DacCAd7987D0960c4e2CD4b;
 
     IChronicleOracle constant ORACLE_CHRONICLE = IChronicleOracle(0x5E16CA75000fb2B9d7B1184Fa24fF5D938a345Ef);
