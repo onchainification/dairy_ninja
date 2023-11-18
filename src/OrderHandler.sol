@@ -88,6 +88,9 @@ contract OrderHandler is BaseConditionalOrder {
         // decode `staticInput` received in the handler following struct pattern
         Data memory dets = abi.decode(staticInput, (Data));
 
+        /// @dev Check actually we are selling token non-zero value
+        if (dets.sellAmount == 0) revert("What are you trying???");
+
         /// @dev Check that quote does not deviate more than 10%. DO NOT RUG ME!
         uint256 oracleFeedsResult = (_getOraclePrice() * 9_000) / MAX_BPS;
         if (dets.buyAmount < oracleFeedsResult) revert("CowSwap endpoint is trying to rug us!!");

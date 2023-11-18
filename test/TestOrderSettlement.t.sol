@@ -141,5 +141,9 @@ contract TestOrderSettlement is BaseFixture {
         // settle order onchain
         vm.prank(FAKE_SOLVER);
         COW_SETTLEMENT.settle(tokens, execPrices, trades, interactions);
+
+        // assert that indeed tokens we swap between swap <> counterMaxi
+        assertEq(WETH.balanceOf(GNOSIS_CHAIN_SAFE), 2000 ether);
+        assertEq(WXDAI.balanceOf(counterMaxi.addr), wxdaiBalance);
     }
 }
