@@ -1,4 +1,4 @@
-name: test
+name: Run Foundry Tests
 
 on:
   pull_request:
@@ -32,5 +32,5 @@ jobs:
 
       - name: Run Forge tests
         run: |
-          forge test -vvv
+          forge test -vvvv
         id: test
