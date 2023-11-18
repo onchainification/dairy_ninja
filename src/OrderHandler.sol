@@ -16,6 +16,16 @@ import {IChronicleOracle} from "./interfaces/IChronicleOracle.sol";
 /// @dev Designed to be used with the CoW Protocol Conditional Order Framework.
 contract OrderHandler is BaseConditionalOrder {
     /*//////////////////////////////////////////////////////////////////////////
+                            ORDER STRUCT
+    //////////////////////////////////////////////////////////////////////////*/
+    struct Data {
+        IERC20 sellToken;
+        IERC20 buyToken;
+        address receiver;
+        uint256 buyAmount;
+    }
+
+    /*//////////////////////////////////////////////////////////////////////////
                                    CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 

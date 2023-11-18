@@ -16,9 +16,12 @@ contract BaseFixture is Test {
 
     ComposableCoW composableCow;
 
+    // gnosis safe address
     address constant GNOSIS_CHAIN_SAFE = 0xa4A4a4879dCD3289312884e9eC74Ed37f9a92a55;
 
+    // tokens
     IERC20 constant WXDAI = IERC20(0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d);
+    IERC20 constant WETH = IERC20(0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1);
 
     // NOTE: found addy in https://gnosisscan.io/address/0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef#readContract#F2
     address constant RELY_AUTH_ORACLE = 0xc50dFeDb7E93eF7A3DacCAd7987D0960c4e2CD4b;
