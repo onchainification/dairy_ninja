@@ -1,0 +1,9 @@
+forge-std/=lib/forge-std/src/
+cow-order/=lib/cow/src/
+safe/=lib/cow/lib/safe/contracts/
+balancer/=lib/cow/lib/balancer/src/
+@openzeppelin/=lib/cow/lib/@openzeppelin/contracts/
+@openzeppelin/contracts/=lib/cow/lib/@openzeppelin/contracts/
+canonical-weth/=lib/cow/lib/canonical-weth/src/
+cowprotocol/=lib/cow/lib/cowprotocol/src/contracts/
+murky/=lib/cow/lib/murky/src/
