@@ -11,6 +11,7 @@ python = "^3.9"
 fastapi = "^0.104.1"
 uvicorn = {extras = ["standard"], version = "^0.24.0.post1"}
 gunicorn = "^21.2.0"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.11.0"
