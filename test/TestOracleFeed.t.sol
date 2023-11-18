@@ -12,8 +12,8 @@ contract TestOracleFeed is BaseFixture {
 
     function testOracleFeedWhitelisting() public {
         // ensure sc is WL
-        bool isTooled = ORACLE_CHRONICLE.tolled(address(orderHandler));
-        assertTrue(isTooled);
+        bool isTolled = ORACLE_CHRONICLE.tolled(address(orderHandler));
+        assertTrue(isTolled);
 
         // ensure price is > 0
         uint256 price = orderHandler.getOraclePrice();
