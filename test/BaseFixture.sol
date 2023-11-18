@@ -5,6 +5,7 @@ import {Test, console} from "forge-std/Test.sol";
 
 import {IChronicleOracle} from "../src/interfaces/IChronicleOracle.sol";
 import {IGPv2AllowListAuthentication} from "../src/interfaces/IGPv2AllowListAuthentication.sol";
+import {ICowSettlement} from "../src/interfaces/ICowSettlement.sol";
 
 import {ComposableCoW} from "cow-order/ComposableCoW.sol";
 
@@ -32,6 +33,8 @@ contract BaseFixture is Test {
 
     IGPv2AllowListAuthentication constant COW_ALLOW_LIST =
         IGPv2AllowListAuthentication(0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE);
+
+    ICowSettlement constant COW_SETTLEMENT = ICowSettlement(0x9008D19f58AAbD9eD0D60971565AA8510560ab41);
 
     // NOTE: found addy in https://gnosisscan.io/address/0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef#readContract#F2
     address constant RELY_AUTH_ORACLE = 0xc50dFeDb7E93eF7A3DacCAd7987D0960c4e2CD4b;
