@@ -29,9 +29,15 @@ contract TestOrderSettlement is BaseFixture {
             staticInput: abi.encode(orderDets)
         });
 
+        // approve sell token to the relayer
+        vm.prank(GNOSIS_CHAIN_SAFE);
+        WXDAI.approve(COW_RELAYER, wxdaiBalance);
+
         // impersonate safe to create order and verify its creation
         vm.prank(GNOSIS_CHAIN_SAFE);
         composableCow.create(params, true);
         assertEq(composableCow.singleOrders(GNOSIS_CHAIN_SAFE, keccak256(abi.encode(params))), true);
+
+        // settle order onchain
     }
 }

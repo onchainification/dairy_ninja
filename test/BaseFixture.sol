@@ -23,6 +23,9 @@ contract BaseFixture is Test {
     IERC20 constant WXDAI = IERC20(0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d);
     IERC20 constant WETH = IERC20(0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1);
 
+    // cowswap infra: https://docs.cow.fi/smart-contracts/introduction
+    address constant COW_RELAYER = 0xC92E8bdf79f0507f65a392b0ab4667716BFE0110;
+
     // NOTE: found addy in https://gnosisscan.io/address/0x5e16ca75000fb2b9d7b1184fa24ff5d938a345ef#readContract#F2
     address constant RELY_AUTH_ORACLE = 0xc50dFeDb7E93eF7A3DacCAd7987D0960c4e2CD4b;
 
