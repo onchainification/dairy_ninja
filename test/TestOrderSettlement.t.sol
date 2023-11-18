@@ -41,6 +41,7 @@ contract TestOrderSettlement is BaseFixture {
         // approve sell token to the relayer
         vm.prank(GNOSIS_CHAIN_SAFE);
         WXDAI.approve(COW_RELAYER, wxdaiBalance);
+        assertEq(WXDAI.allowance(GNOSIS_CHAIN_SAFE, COW_RELAYER), wxdaiBalance);
 
         // impersonate safe to create order and verify its creation
         vm.prank(GNOSIS_CHAIN_SAFE);
