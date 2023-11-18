@@ -53,7 +53,10 @@ async def get_quotes(
         r = requests.post(cow_url, json=data)
         r.raise_for_status()
         quote = r.json()["quote"]
-        return str(int(quote["buyAmount"]) + int(quote["feeAmount"]))
+        buy_amount = quote["buyAmount"]
+        fee_amount = quote["feeAmount"]
+        fee_factor = int(fee_amount) / int(buy_amount) + 1
+        return str(int(int(buy_amount) * fee_factor))
 
     fusion = await get_fusion_quote(
         sell_token_address, sell_mantissa, buy_token_address
