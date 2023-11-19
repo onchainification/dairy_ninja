@@ -1,5 +1,36 @@
 # 🥷 DairyNinja
 
+TL;DR: A multisig plugin that automatically decides which dex aggregator services to use based on API3 response, while not fully trusting the quotation of the services blindly by cross-checking with oracles services (Chronicle, API3) at the settlement time.
+
+## Overview
+
+At the present time, majority of dex's aggregators are leveraging private infrastructure for quote provision, which does not necessarily mean they are neither legit nor precise as service can get corrupted. There should be an enforcement on-chain for the pricing, which ensures an healthy quotation within reasonable deviations.
+
+Oracle health checks is achieved with a combination of oracles providers: Chronicle & API3. In light of neither trusting a single oracle entity, we are taking the maximum between the two (`max(oracle_a, oracle_b)`), which will be the value used for ensuring quotation legitimacy.
+
+Assuming that health checks are satisfied a smart order will be executed automatically via most optimal route.
+
+### Features
+
+- **API3 Oracles & AirNode**:
+  - Given a target pair and its corresponding [data feed ID](https://market.api3.org/dapis/gnosis/ETH-USD), [dAPIs](https://docs.api3.org/reference/dapis/understand/) provides pair value on-chain.
+  - Airnode to bring off-chain dex aggregator computation to on-chain, logic defined in `api.py`.
+
+- **Chronicle Oracles**:
+  - Used as a redundancy tool for on-chain pricing together with `API3` ensuring that non provider is corrupt.
+
+- **CowSwap Smart Orders**:
+  - Create automatically a smart order for a safe, which will execute the swap if health check conditions are met.
+
+- **Safe Protocol Compliance**:
+  - The entire system adheres to the principles of the [Safe Protocol white paper](https://github.com/safe-global/safe-core-protocol-specs/blob/main/whitepaper.pdf), ensuring all Safe multisigs can benefit from the dairy ninja module.
+
+### Benefits
+
+- Off-chain quotation is verified on-chain against a set of oracles, not trusting any backend services blindly
+- Smart Order <> solvers handles the routing maximizing the objective function of max buying token amount
+- Safe protocol compliance
+
 ## API
 
 deploys automatically to gcloud when committed to branch `main`.
@@ -32,3 +63,7 @@ api endpoint retrieve quotes from both and returns a sorted list from high to lo
 ### Step 2: deploy airnode to read api endpoint onchain
 
 the api endpoint from step 1 is deployed with id `awsed1d5d07`. also see [deployment log](airnode/logs/deployer-2023-11-19_03:23:45.log)
+
+## Deployments
+
+- [`OrderHandler`](https://gnosisscan.io/address/0xe0142a586ac163ddf8e4ab2af4607cd0f8943710#code)
