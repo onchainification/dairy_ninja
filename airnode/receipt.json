@@ -1,0 +1,18 @@
+{
+  "airnodeWallet": {
+    "airnodeAddress": "0x6b643533F72D37105699876e56d960FA32d6318c",
+    "airnodeXpub": "xpub6CAJnsjYbfHtDXpQVepMM19KwL1ap2dWRZbzpPBcWEG93Z2eRjvkyhjz6uU499K6P4jkPwnkLs7nayzfZuy6bV9MiLLBjn2ji82SYqwaTYk"
+  },
+  "deployment": {
+    "deploymentId": "awsed1d5d07",
+    "cloudProvider": {
+      "type": "aws",
+      "region": "us-east-1",
+      "disableConcurrencyReservations": true
+    },
+    "stage": "dairy-ninja-depl",
+    "nodeVersion": "0.13.0",
+    "timestamp": "2023-11-19T03:23:45.819Z"
+  },
+  "success": true
+}

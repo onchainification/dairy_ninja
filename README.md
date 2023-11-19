@@ -29,4 +29,6 @@ api endpoint retrieve quotes from both and returns a sorted list from high to lo
 
 (ie `10000000000000000` worth of $wxdai yields `9410094525775922` $eure on cow and `9150805270863836` $eure on 1inch)
 
-### Step 2:
+### Step 2: deploy airnode to read api endpoint onchain
+
+the api endpoint from step 1 is deployed with id `awsed1d5d07`. also see [deployment log](airnode/logs/deployer-2023-11-19_03:23:45.log)
