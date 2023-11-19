@@ -4,11 +4,26 @@ TL;DR: A multisig plugin that automatically decides which dex aggregator service
 
 ## Overview
 
-At the present time, majority of dex aggregator are leveraging private infrastructure for quote provision, which does not necessarily mean they are neither legit nor precise as service can get corrupted. There should be an enforcement on-chain for the pricing, which ensures an healthy quotation within reasonable deviations.
+At the present time, majority of dex's aggregators are leveraging private infrastructure for quote provision, which does not necessarily mean they are neither legit nor precise as service can get corrupted. There should be an enforcement on-chain for the pricing, which ensures an healthy quotation within reasonable deviations.
 
 Oracle health checks is achieved with a combination of oracles providers: Chronicle & API3. In light of neither trusting a single oracle entity, we are taking the maximum between the two (`max(oracle_a, oracle_b)`), which will be the value used for ensuring quotation legitimacy.
 
-Assuming that health checks are satisfied a smart order will be executed automatically via CowSwap.
+Assuming that health checks are satisfied a smart order will be executed automatically via most optimal route.
+
+## Features
+
+- **API3 Oracles & AirNode**:
+  - Given a target pair and its corresponding [data feed ID](https://market.api3.org/dapis/gnosis/ETH-USD), [dAPIs](https://docs.api3.org/reference/dapis/understand/) provides pair value on-chain.
+  - Airnode to bring off-chain dex aggregator computation to on-chain, logic defined in `api.py`.
+
+- **Chronicle Oracles**:
+  - Used as a redundancy tool for on-chain pricing together with `API3` ensuring that non provider is corrupt.
+
+- **CowSwap Smart Orders**:
+  - Create automatically a smart order for a safe, which will execute the swap if health check conditions are met.
+
+- **Safe Protocol Compliance**:
+  - The entire system adheres to the principles of the [Safe Protocol white paper](https://github.com/safe-global/safe-core-protocol-specs/blob/main/whitepaper.pdf), ensuring all Safe multisigs can benefit from the dairy ninja module.
 
 ## API
 
