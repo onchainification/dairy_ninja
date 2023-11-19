@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import {console} from "forge-std/Test.sol";
-
 import {ComposableCoW} from "cow-order/ComposableCoW.sol";
 import {BaseConditionalOrder} from "cow-order/BaseConditionalOrder.sol";
 
@@ -36,6 +34,9 @@ contract OrderHandler is BaseConditionalOrder {
     //////////////////////////////////////////////////////////////////////////*/
     uint256 constant MAX_BPS = 10_000;
     uint256 constant MAX_ORACLE_DELAY = 2 hours;
+
+    address constant WXDAI = 0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d;
+    address constant WETH = 0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1;
 
     // https://gnosisscan.io/address/0x0Dcc19657007713483A5cA76e6A7bbe5f56EA37d#code
     ISelfKiss constant SELF_KISS_CHRONICLE = ISelfKiss(0x0Dcc19657007713483A5cA76e6A7bbe5f56EA37d);
@@ -92,7 +93,14 @@ contract OrderHandler is BaseConditionalOrder {
         if (dets.sellAmount == 0) revert("What are you trying???");
 
         /// @dev Check that quote does not deviate more than 10%. DO NOT RUG ME!
-        uint256 oracleFeedsResult = (_getOraclePrice() * 9_000) / MAX_BPS;
+        uint256 expectedAmountOut;
+        if (address(dets.sellToken) == WXDAI) {
+            expectedAmountOut = (dets.sellAmount * 1e18) / _getOraclePrice();
+        } else {
+            expectedAmountOut = (dets.sellAmount * _getOraclePrice()) / 1e18;
+        }
+
+        uint256 oracleFeedsResult = (expectedAmountOut * 9_000) / MAX_BPS;
         if (dets.buyAmount < oracleFeedsResult) revert("CowSwap endpoint is trying to rug us!!");
 
         // construct order
