@@ -10,7 +10,7 @@ Oracle health checks is achieved with a combination of oracles providers: Chroni
 
 Assuming that health checks are satisfied a smart order will be executed automatically via most optimal route.
 
-## Features
+### Features
 
 - **API3 Oracles & AirNode**:
   - Given a target pair and its corresponding [data feed ID](https://market.api3.org/dapis/gnosis/ETH-USD), [dAPIs](https://docs.api3.org/reference/dapis/understand/) provides pair value on-chain.
@@ -24,6 +24,12 @@ Assuming that health checks are satisfied a smart order will be executed automat
 
 - **Safe Protocol Compliance**:
   - The entire system adheres to the principles of the [Safe Protocol white paper](https://github.com/safe-global/safe-core-protocol-specs/blob/main/whitepaper.pdf), ensuring all Safe multisigs can benefit from the dairy ninja module.
+
+### Benefits
+
+- Off-chain quotation is verified on-chain against a set of oracles, not trusting any backend services blindly
+- Smart Order <> solvers handles the routing maximizing the objective function of max buying token amount
+- Safe protocol compliance
 
 ## API
 
