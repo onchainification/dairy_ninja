@@ -1,5 +1,15 @@
 # 🥷 DairyNinja
 
+TL;DR: A multisig plugin that automatically decides which dex aggregator services to use based on API3 response, while not fully trusting the quotation of the services blindly by cross-checking with oracles services (Chronicle, API3) at the settlement time.
+
+## Overview
+
+At the present time, majority of dex aggregator are leveraging private infrastructure for quote provision, which does not necessarily mean they are neither legit nor precise as service can get corrupted. There should be an enforcement on-chain for the pricing, which ensures an healthy quotation within reasonable deviations.
+
+Oracle health checks is achieved with a combination of oracles providers: Chronicle & API3. In light of neither trusting a single oracle entity, we are taking the maximum between the two (`max(oracle_a, oracle_b)`), which will be the value used for ensuring quotation legitimacy.
+
+Assuming that health checks are satisfied a smart order will be executed automatically via CowSwap.
+
 ## API
 
 deploys automatically to gcloud when committed to branch `main`.
