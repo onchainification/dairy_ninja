@@ -1,0 +1,27 @@
+2023-11-19T03:23:45.033Z: Running command deploy with arguments {"debug":false,"logs":"config/logs/","configuration":"config/config.json","config":"config/config.json","conf":"config/config.json","secrets":"config/secrets.env","receipt":"config/receipt.json","auto-remove":true,"autoRemove":true}
+2023-11-19T03:23:45.039Z: Parsing secrets file
+2023-11-19T03:23:45.820Z: Deriving airnode wallet from mnemonic
+2023-11-19T03:23:46.464Z: Deploying Airnode 0x6b643533F72D37105699876e56d960FA32d6318c dairy-ninja-depl to aws us-east-1
+2023-11-19T03:23:46.515Z: Fetching Airnode bucket
+2023-11-19T03:23:46.554Z: Listing S3 buckets
+2023-11-19T03:23:48.577Z: Using Airnode bucket 'airnode-ba597e668aac'
+2023-11-19T03:23:48.579Z: Fetching Airnode bucket content
+2023-11-19T03:23:48.584Z: Listing objects for S3 bucket 'airnode-ba597e668aac'
+2023-11-19T03:23:49.328Z: Storing configuration file for new deployment 0x6b643533F72D37105699876e56d960FA32d6318c/dairy-ninja-depl/1700364225819
+2023-11-19T03:23:49.332Z: Storing file 'config/config.json' as '0x6b643533F72D37105699876e56d960FA32d6318c/dairy-ninja-depl/1700364225819/config.json' to S3 bucket 'airnode-ba597e668aac'
+2023-11-19T03:23:50.396Z: Storing secrets file for new deployment 0x6b643533F72D37105699876e56d960FA32d6318c/dairy-ninja-depl/1700364225819
+2023-11-19T03:23:50.403Z: Storing file 'config/secrets.env' as '0x6b643533F72D37105699876e56d960FA32d6318c/dairy-ninja-depl/1700364225819/secrets.env' to S3 bucket 'airnode-ba597e668aac'
+2023-11-19T03:23:51.433Z: Deploying Airnode via Terraform recipes
+2023-11-19T03:23:51.440Z: Deriving airnode wallet from mnemonic
+2023-11-19T03:23:51.728Z: Running command 'terraform init -backend-config="region=us-east-1" -backend-config="bucket=airnode-ba597e668aac" -backend-config="key=0x6b643533F72D37105699876e56d960FA32d6318c/dairy-ninja-depl/1700364225819/default.tfstate" -from-module=/usr/local/share/.config/yarn/global/node_modules/@api3/airnode-deployer/dist/terraform/aws' with options {"cwd":"/tmp/airnodeaaHOac"}
+2023-11-19T03:24:36.910Z: Running command 'terraform apply -var="aws_region=us-east-1" -var="deployment_id=awsed1d5d07" -var="configuration_file=/usr/local/share/.config/yarn/global/node_modules/@api3/airnode-deployer/dist/config/config.json" -var="secrets_file=/usr/local/share/.config/yarn/global/node_modules/@api3/airnode-deployer/dist/config/secrets.env" -var="handler_dir=/usr/local/share/.config/yarn/global/node_modules/@api3/airnode-deployer/dist/.webpack" -var="disable_concurrency_reservation=true" -var="airnode_wallet_private_key=0x8a7806c7f91170a8545a12d59fb3b1df858f66eb8c7cf82664513d0675921f65" -input=false -no-color -var="max_concurrency=50" -var="http_gateway_enabled=true" -var="http_max_concurrency=20" -var="http_signed_data_gateway_enabled=true" -var="http_signed_data_max_concurrency=20" -var="oev_gateway_enabled=true" -var="oev_max_concurrency=20" -auto-approve' with options {"cwd":"/tmp/airnodeaaHOac"}
+2023-11-19T03:26:20.106Z: Running command 'terraform output -json -no-color' with options {"cwd":"/tmp/airnodeaaHOac"}
+2023-11-19T03:26:26.575Z: Deployed Airnode 0x6b643533F72D37105699876e56d960FA32d6318c dairy-ninja-depl to aws us-east-1
+2023-11-19T03:26:26.581Z: Deriving airnode wallet from mnemonic
+2023-11-19T03:26:26.711Z: Deriving Airnode xpub from mnemonic
+2023-11-19T03:26:26.760Z: Writing receipt.json file
+2023-11-19T03:26:26.762Z: Outputted config/receipt.json
+  This file does not contain any sensitive information.
+2023-11-19T03:26:26.765Z: HTTP gateway URL: ***
+2023-11-19T03:26:26.765Z: HTTP signed data gateway URL: ***
+2023-11-19T03:26:26.766Z: OEV gateway URL: ***

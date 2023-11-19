@@ -1,0 +1,193 @@
+{
+  "apiCredentials": [],
+  "chains": [
+    {
+      "authorizations": {
+        "requesterEndpointAuthorizations": {}
+      },
+      "authorizers": {
+        "crossChainRequesterAuthorizers": [],
+        "crossChainRequesterAuthorizersWithErc721": [],
+        "requesterAuthorizersWithErc721": [],
+        "requesterEndpointAuthorizers": []
+      },
+      "blockHistoryLimit": 150,
+      "contracts": {
+        "AirnodeRrp": "0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd"
+      },
+      "id": "100",
+      "maxConcurrency": 50,
+      "minConfirmations": 0,
+      "options": {
+        "fulfillmentGasLimit": 500000,
+        "gasPriceOracle": [
+          {
+            "gasPriceStrategy": "providerRecommendedGasPrice",
+            "recommendedGasPriceMultiplier": 1.2
+          },
+          {
+            "gasPrice": {
+              "unit": "gwei",
+              "value": 10
+            },
+            "gasPriceStrategy": "constantGasPrice"
+          }
+        ],
+        "withdrawalRemainder": {
+          "unit": "wei",
+          "value": 0
+        }
+      },
+      "providers": {
+        "gnosisChainPublic": {
+          "url": "https://rpc.gnosischain.com"
+        }
+      },
+      "type": "evm"
+    }
+  ],
+  "nodeSettings": {
+    "airnodeWalletMnemonic": "${AIRNODE_WALLET_MNEMONIC}",
+    "cloudProvider": {
+      "disableConcurrencyReservations": true,
+      "region": "us-east-1",
+      "type": "aws"
+    },
+    "heartbeat": {
+      "apiKey": "${HEARTBEAT_API_KEY}",
+      "enabled": true,
+      "url": "${HEARTBEAT_URL}"
+    },
+    "httpGateway": {
+      "corsOrigins": [],
+      "enabled": true,
+      "maxConcurrency": 20
+    },
+    "httpSignedDataGateway": {
+      "corsOrigins": [],
+      "enabled": true,
+      "maxConcurrency": 20
+    },
+    "logFormat": "plain",
+    "logLevel": "INFO",
+    "nodeVersion": "0.13.0",
+    "oevGateway": {
+      "corsOrigins": [],
+      "enabled": true,
+      "maxConcurrency": 20
+    },
+    "stage": "dairy-ninja-depl"
+  },
+  "ois": [
+    {
+      "apiSpecifications": {
+        "components": {
+          "securitySchemes": {}
+        },
+        "paths": {
+          "/get_quotes": {
+            "get": {
+              "parameters": [
+                {
+                  "in": "query",
+                  "name": "sell_token_address"
+                },
+                {
+                  "in": "query",
+                  "name": "sell_amount"
+                },
+                {
+                  "in": "query",
+                  "name": "buy_token_address"
+                }
+              ]
+            }
+          }
+        },
+        "security": {},
+        "servers": [
+          {
+            "url": "https://api-playground-405417.ue.r.appspot.com"
+          }
+        ]
+      },
+      "endpoints": [
+        {
+          "fixedOperationParameters": [],
+          "name": "GET_quotes",
+          "operation": {
+            "method": "get",
+            "path": "/get_quotes"
+          },
+          "parameters": [
+            {
+              "name": "sell_token_address",
+              "operationParameter": {
+                "in": "query",
+                "name": "sell_token_address"
+              },
+              "required": true
+            },
+            {
+              "name": "sell_amount",
+              "operationParameter": {
+                "in": "query",
+                "name": "sell_amount"
+              },
+              "required": true
+            },
+            {
+              "name": "buy_token_address",
+              "operationParameter": {
+                "in": "query",
+                "name": "buy_token_address"
+              },
+              "required": true
+            }
+          ],
+          "postProcessingSpecifications": [],
+          "preProcessingSpecifications": [],
+          "reservedParameters": [
+            {
+              "name": "_type"
+            },
+            {
+              "name": "_path"
+            },
+            {
+              "name": "_times"
+            }
+          ]
+        }
+      ],
+      "oisFormat": "2.2.1",
+      "title": "dairy ninja endpoint",
+      "version": "0.1.0"
+    }
+  ],
+  "templates": [],
+  "triggers": {
+    "http": [
+      {
+        "endpointId": "0xc3fef1704788f25453f11b3ebb3fdb084a16bcbfd56dae06c7bf0b86af2ad97f",
+        "endpointName": "GET_quotes",
+        "oisTitle": "dairy ninja endpoint"
+      }
+    ],
+    "httpSignedData": [
+      {
+        "endpointId": "0xc3fef1704788f25453f11b3ebb3fdb084a16bcbfd56dae06c7bf0b86af2ad97f",
+        "endpointName": "GET_quotes",
+        "oisTitle": "dairy ninja endpoint"
+      }
+    ],
+    "rrp": [
+      {
+        "cacheResponses": false,
+        "endpointId": "0xc3fef1704788f25453f11b3ebb3fdb084a16bcbfd56dae06c7bf0b86af2ad97f",
+        "endpointName": "GET_quotes",
+        "oisTitle": "dairy ninja endpoint"
+      }
+    ]
+  }
+}
